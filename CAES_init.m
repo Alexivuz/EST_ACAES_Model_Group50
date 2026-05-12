@@ -99,8 +99,8 @@ grid_buy_price  = 0.25;   % [£/kWh]
 SOC_hp_charge_start    = 0.05;
 SOC_hp_charge_stop     = 0.95;
 SOC_TES_discharge_min  = 0.10;
-P_net_charge_thresh    = 5000;   % [W] minimum surplus to charge
-P_net_discharge_thresh = 5000;   % [W] minimum deficit to discharge
+P_net_charge_thresh    = 50000;   % [W] minimum surplus to charge
+P_net_discharge_thresh = 50000;   % [W] minimum deficit to discharge
 
 % Valve dynamics
 tau_valve   = 30;   % [s] valve response time (30s = slow, appropriate for 1hr timestep)
