@@ -58,20 +58,32 @@ gamma       = 1.4;        % [-]
 T0          = 293.15;     % [K]  ambient temperature
 P0          = 101325;     % [Pa] ambient pressure
 
-% HP store
+
 V_hp        = 500;
-P_hp_min    = 4.0e6;
-P_hp_max    = 7.0e6;
-P_throttle  = 4.0e6;
+
+P_hp_min    = 4.0e6;    % [Pa]  40 bar — compressor start pressure
+P_hp_max    = 8.0e6;    % [Pa]  80 bar — achievable with 3-stage compression
+P_throttle  = 3.8e6;    % [Pa]  38 bar — BELOW P_hp_min so gate never blocks
+%        the throttle valve itself regulates expansion
+
+P_hp_init   = P_hp_min; % [Pa]  start at minimum — must match P_hp_min
+m_hp_init   = P_hp_min * V_hp / (R_air * T0);   % recalculate initial mass
+
+% Lower the SOC threshold so discharge fires earlier
+SOC_hp_charge_start = 0.02;    % was 0.05 — discharge allowed above 2% SOC
+% at P_hp_min=4 MPa, 2% SOC = P_hp > 4.06 MPa
+
+
+% HP store
+
 
 % Initial conditions
-m_hp_init   = P_hp_min * V_hp / (R_air * T0);  % [kg] initial air mass
 T_hp_init   = T0;
-P_hp_init   = P_hp_min;
+
 
 % TES
 N_stages    = 3;
-m_TES       = 2000;
+m_TES       = 50000;
 cp_TES      = 1900;
 UA_TES_wall = 1.5;        % [W/K] heat loss coefficient
 T_TES_init  = T0;
@@ -96,10 +108,9 @@ grid_sell_price = 0.10;   % [£/kWh]
 grid_buy_price  = 0.25;   % [£/kWh]
 
 % Controller thresholds
-SOC_hp_charge_start    = 0.05;
-SOC_hp_charge_stop     = 0.95;
-SOC_TES_discharge_min  = 0.10;
-P_net_charge_thresh    = 50000;   % [W] minimum surplus to charge
+SOC_hp_charge_stop     = 0.88;
+SOC_TES_discharge_min  = 0.02;
+P_net_charge_thresh    = 1000000;   % [W] minimum surplus to charge
 P_net_discharge_thresh = 50000;   % [W] minimum deficit to discharge
 
 % Valve dynamics
